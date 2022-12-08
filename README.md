@@ -13,8 +13,8 @@ check out these two projects
 -   [Git Stats](https://github.com/IonicaBizau/git-stats) by [Ionică
     Bizău](https://github.com/IonicaBizau) (JavaScript)
 
-**Example**
-![https://raw.githubusercontent.com/masukomi/heatmapper/readme_images/images/style_examples.png?token=GHSAT0AAAAAABPRZG7EHCFW2JUMQUESG77AY4SM6NA](https://raw.githubusercontent.com/masukomi/heatmapper/readme_images/images/style_examples.png?token=GHSAT0AAAAAABPRZG7EHCFW2JUMQUESG77AY4SM6NA)
+**Example**  
+![example output](../readme_images/images/style_examples.png)
 
 ## Installation
 
