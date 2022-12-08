@@ -27,9 +27,7 @@
 			; *Orange Peel*
 			(list 254 160 0)
 			; *Flush Orange*
-			(list 252 126 0)
-		  )
-	  )
+			(list 252 126 0)))
 	 (hash-table-set! schemes 'github
 		(list
 			; *Alabaster*
@@ -43,115 +41,90 @@
 			; *Japanese Laurel*
 			(list 0 135 0)
 			; *Camarone*
-			(list 0 95 0)
-		)
-	 )
-	 schemes
-	 )
-
-   )
+			(list 0 95 0)))
+	 schemes))
 
  (define (percentify-numbers numbers)
-   (format (current-error-port) "XXX numbers ~%" numbers)
    (percentify (car (sort numbers >))
 			   numbers
-			   '() )
-   )
+			   '() ))
 
  (define (percentify max numbers accumulator)
  	(if (null? numbers)
- 		accumulator
- 		(percentify (cdr numbers)
- 					(insert-last
- 					(round (* (/ (car numbers) max) 100))
- 					accumulator)
- 					)
- 		)
- 	)
+ 		  accumulator
+		  (let* ((percent  (round (* (/ (car numbers) max) 100)))
+				)
+
+			(percentify max (cdr numbers)
+					(insert-last percent accumulator)))))
+
  (define (prep-output-data rows)
    (define (add-row remaining accumulator)
 	 (if (== remaining 0)
 		 accumulator
-		 (add-row (- remaining 1) (insert-last '() accumulator))
-		 )
-	 )
-   (add-row rows '())
-   )
+		 (add-row (- remaining 1) (insert-last '() accumulator))))
+   (add-row rows '()))
 
  (define (populate-output-data numbers columns rows output-data)
    (define (populator numbers columns rows row-index output-data)
 	(if (null? numbers)
 		output-data
-		(begin
-		  (let ((current-row (if (== (- rows 1) row-index) 0 (+ row-index 1))))
+		  (let* (
+				 (current-row-index (if (eq? (- rows 1) row-index) 0 (+ row-index 1)))
+				 (current-row (nth current-row-index output-data))
+				)
 			(if (and (== current-row 0)
-				   (== columns (length (nth current-row (output-data))))
+				   (== columns (length current-row))
 				   )
-			  output-data
-			  ; else
-			  (populate-output-data (cdr numbers)
-										columns
-										rows
-										current-row
-										(replace-nth current-row
-													 (insert-last (car numbers)
-																  (nth current-row output-data)))
-										)
+			  ; exit, returning the output-data accumulated
+			  (begin
+				output-data
+				)
 
-			)
-
-		  ); end let
-			); end begin; still unnecessary? then delete
-		)
-	 )
-
-   (populator numbers columns rows -1 '())
-   )
+		      (begin
+		      	(let ((new-output-data (replace-nth current-row-index
+		      										(insert-last (car numbers) current-row)
+													output-data)))
+		      	(populator (cdr numbers)
+							columns
+							rows
+							current-row-index
+							new-output-data
+							)))))))
+   (populator numbers columns rows -1 output-data))
 
 
  (define (print-heatmap numbers columns rows color-scheme)
-   (format (current-error-port) "XXX print-heatmap numbers ~%" numbers)
    (let ((output-data
 		  (populate-output-data
 		   (percentify-numbers numbers)
 		   columns rows
-		   (prep-output-data rows ))
-		  )
-		 )
-	 (print-rows color-scheme output-data)
-	 )
-   )
+		   (prep-output-data rows ))))
+	 (print-rows (hash-table-ref color-schemes color-scheme) output-data)))
 
  (define (print-rows color-scheme rows)
    (if (not (null? rows))
 	   (begin
-		(print-row (car rows))
-		(print-rows (cdr rows))
-		 )
-	   )
-   )
+		(print-row color-scheme (car rows))
+		(let ((next-row (cdr rows)))
+		  (if (not (null? next-row))
+			  (print-rows color-scheme next-row)
+			  )))))
 
  ; each row prints the squares, ends the coloring and then prints a newline
  (define (print-row color-scheme row)
    (map (lambda (x)(print-number x color-scheme)) row )
-   (format #t "\x1b[0m~%")
-   )
+   (printf "\x1b[0m~%"))
 
  ; color-scheme is the chosen color scheme from color-schemes
  ; i.e. a list of 5 lists of numbers
  (define (print-number percentage color-scheme)
    (let* ((bucket (if (== percentage 100)
 					 4
-				(floor-quotient percentage 20)
+					 (floor-quotient percentage 20)
 					 ))
 		  (rgb (nth bucket color-scheme))
 		  (rgb-string (string-join
 					   (map (lambda (x)(number->string x)) rgb )
-					   ";"
-					   ))
-		  )
-
-	 (format #t "\x1b[38;2;%a██m" rgb-string)
-   )
- )
-)
+					   ";")))
+	 (printf "\x1b[38;2;~am██" rgb-string))))

@@ -25,6 +25,10 @@ heatmap
 for lib in ${libs[@]}; do
 	echo "building $lib"
 	csc -static -unit $lib -cJ $lib".scm"
+	if [ $? -ne 0 ]; then
+		echo "exiting. see error above"
+		exit 1
+	fi
 done
 
 
