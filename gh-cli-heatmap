@@ -46,17 +46,31 @@ def populate_output_data(output_data, p_numbers, rows, columns)
 end
 def print_number(num, color_scheme=:wistia)
   # num is a percentage
-  fifth = (num / 20 ) - 1
-  if fifth > 0
-    color_string=COLOR_SCHEMES[color_scheme][fifth].join(';')
-  else
-    color_string="255;255;255"
+  case num
+    when 0..20
+      fifth = 0
+    when 21..40
+      fifth = 1
+    when 41..60
+      fifth = 2
+    when 61..80
+      fifth = 3
+    else
+      fifth = 4
   end
+  # fifth2 = (num  / 20 )
+  # STDERR.puts("num: #{num} - fifth: #{fifth}, fifth2 = #{fifth2}")
+  # if fifth > 0
+    color_string=COLOR_SCHEMES[color_scheme][fifth].join(';')
+  # else
+  #   color_string=default_color.join(";")
+  # end
   # STDERR.puts("color string: #{color_string}");
+  # printf("\x1b[38;2;#{color_string}m■")
   printf("\x1b[38;2;#{color_string}m█")
 end
 
-default_color=[0,0,0] # TODO parameterize
+# default_color=[0,0,0] # TODO parameterize
 rows = 7 # TODO parameterize
 columns = `tput cols`.strip.to_i
 number_type = :relative # TODO paramaterize for :absolute
