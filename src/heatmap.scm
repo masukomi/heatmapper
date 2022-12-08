@@ -2,6 +2,7 @@
  heatmap
  (
   print-heatmap
+  color-schemes
   )
 
  (import srfi-69); hash tables

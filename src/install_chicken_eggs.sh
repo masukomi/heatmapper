@@ -7,7 +7,8 @@ echo "Will run chicken-install for required eggs (libraries)"
 eggs=(
 srfi-13 \
 srfi-69 \
-srfi-141
+srfi-141 \
+args
 )
 
 for egg in ${eggs[@]}; do
