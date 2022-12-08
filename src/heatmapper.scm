@@ -74,10 +74,8 @@
   (if (alist-ref 'columns options)
 	  (set! columns (alist-ref 'columns options)))
   (if (alist-ref 'scheme options)
-	  (set! scheme (alist-ref 'scheme options)))
+	  (set! colors (alist-ref 'scheme options)))
   )
-
-
 
 ;; let me know if STDIN is coming from a terminal or a pipe/file
 (if (terminal-port? (current-input-port))
