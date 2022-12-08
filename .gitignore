@@ -1,0 +1,7 @@
+cerbo
+cerbo_server/target
+*.o
+*.link
+*.import.scm
+*.tgz
+heatmapper
