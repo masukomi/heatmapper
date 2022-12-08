@@ -40,7 +40,7 @@
        (args:make-option (r rows)       #:required     "max number of rows [default: 7]"
 		 (set! arg (string->number (or arg "7")))
 		 )
-       (args:make-option (s colors)     #:required     "max number of rows [default: 7]"
+       (args:make-option (s scheme)     #:required     "color scheme [default: github]"
 		 (let ((color (string->symbol (or arg "github"))))
 		   (if (not (list-includes? (hash-table-keys color-schemes) color ))
 			   (usage)
@@ -55,6 +55,7 @@
  (with-output-to-port (current-error-port)
    (lambda ()
      (print "Usage: piped data | heatmapper " (car (argv)) " [options...] ")
+     (print "       Supported color schemes: github, wistia")
      (newline)
      (print (args:usage opts))
      (print "Report bugs to https://github.com/masukomi/heatmapper/issues")))
@@ -72,8 +73,8 @@
 		)
   (if (alist-ref 'columns options)
 	  (set! columns (alist-ref 'columns options)))
-  (if (alist-ref 'colors options)
-	  (set! colors (alist-ref 'colors options)))
+  (if (alist-ref 'scheme options)
+	  (set! scheme (alist-ref 'scheme options)))
   )
 
 
