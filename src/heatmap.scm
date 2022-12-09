@@ -84,10 +84,38 @@
 		 (add-row (- remaining 1) (insert-last '() accumulator))))
    (add-row rows '()))
 
+ ; output is complete if every row has the same number of elements
+ (define (is-output-complete? output-data)
+   (let ((initial-length (length (car output-data))))
+	 (all? output-data (lambda(x)(eq? (length x) initial-length)))))
+
+ (define (complete-output-data output-data)
+   (define (completer max-index row-index expected-length output-data)
+	 (if (> row-index max-index)
+		 output-data
+		(if (and (eq? expected-length (length (nth row-index output-data)))
+					(< row-index max-index)
+					)
+					(completer max-index (+ row-index 1) expected-length output-data)
+					; else not and
+					(if (eq? expected-length (length (nth row-index output-data)))
+						output-data ; this should never happen
+						; append a 0 % item to (nth row-index output-data)
+						;
+						(let ((new-output-data (replace-nth row-index
+															(insert-last 0 (nth row-index output-data))
+															output-data)))
+							(completer max-index (+ row-index 1) expected-length new-output-data))))))
+
+   (if (is-output-complete? output-data)
+	   output-data
+	   (let ((initial-length (length (car output-data))))
+		 (completer (- (length output-data) 1) 1 initial-length output-data))))
+
  (define (populate-output-data numbers columns rows output-data)
    (define (populator numbers columns rows row-index output-data)
 	(if (null? numbers)
-		output-data
+		(complete-output-data output-data)
 		  (let* (
 				 (current-row-index (if (eq? (- rows 1) row-index) 0 (+ row-index 1)))
 				 (current-row (nth current-row-index output-data))
@@ -96,9 +124,7 @@
 				   (== columns (length current-row))
 				   )
 			  ; exit, returning the output-data accumulated
-			  (begin
-				output-data
-				)
+		      (complete-output-data output-data)
 
 		      (begin
 		      	(let ((new-output-data (replace-nth current-row-index

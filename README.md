@@ -65,8 +65,9 @@ Report bugs to https://github.com/masukomi/heatmapper/issues
 
 The data fills from from the top left corner down, then moves one column
 to the right, and fills down again. It stops when it runs out of data or
-hits the maximum number of columns. Note the unfinished column in the
-examples.
+hits the maximum number of columns. Unfinished rows will be filled out with
+zero values.
+
 
 A good way to have it always use your current terminal width (in bash / zsh) is to use `tput` as follows:
 
