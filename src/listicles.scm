@@ -3,6 +3,7 @@
    acons
    assoc-set
    alist-merge
+   all?
    any?
    convert-rows-to-cols
    first-where
@@ -129,6 +130,18 @@
       (if (test (car lst))
         (car lst)
         (first-where (cdr lst) test))))
+
+  (define (all? lst test)
+    ; if there's nothing left and it hasn't failed yet
+    (if (null? lst)
+        #t
+        (if (not (test (car lst)))
+            #f
+            (all? (cdr lst) test)
+            )
+
+        )
+    )
 
   ;(any? '("foo" "bar") (lambda(x)(equal? "bar" x)))
   (define (any? lst test)
