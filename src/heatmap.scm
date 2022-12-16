@@ -56,11 +56,21 @@
 			; *Green*
 			(list 0 215 0)
 			; *Japanese Laurel*
-			(list 0 175 0)
-			; *Japanese Laurel*
 			(list 0 135 0)
 			; *Camarone*
 			(list 0 95 0)))
+     (hash-table-set! schemes 'darkhub
+		(list
+			; *Tuna*
+			(list 59 61 64)
+			; *Fruit Salad*
+			(list 83 159 95)
+			; *Mint Green*
+			(list 122 251 156)
+			; *Mint Green*
+			(list 153 255 183)
+			; *Aero Blue*
+			(list 195 255 219)))
 	 schemes))
 
  (define (percentify-numbers numbers)

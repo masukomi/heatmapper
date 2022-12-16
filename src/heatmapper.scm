@@ -55,7 +55,7 @@
  (with-output-to-port (current-error-port)
    (lambda ()
      (print "Usage: piped data | heatmapper " (car (argv)) " [options...] ")
-     (print "       Supported color schemes: github, wistia")
+     (print "       Supported color schemes: github, darkhub, wistia")
      (newline)
      (print (args:usage opts))
      (print "Report bugs to https://github.com/masukomi/heatmapper/issues")))
