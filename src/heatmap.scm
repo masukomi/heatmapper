@@ -71,6 +71,18 @@
 			(list 153 255 183)
 			; *Aero Blue*
 			(list 195 255 219)))
+	(hash-table-set! schemes 'bluehub
+		(list
+			; Athens Gray*
+			(list 235 237 241)
+			; French Pass*
+			(list 181 228 254)
+			; Dodger Blue*
+			(list 80 174 253)
+			; Denim*
+			(list 17 103 221)
+			; Deep Sapphire*
+			(list 7 48 104)))
 	 schemes))
 
  (define (percentify-numbers numbers)

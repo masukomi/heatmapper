@@ -50,7 +50,7 @@ wide and 7 rows tall.
 ``` bogus
 ❯ ./heatmapper --help
 Usage: piped data | heatmapper heatmapper [options...]
-       Supported color schemes: github, wistia
+       Supported color schemes: github, darkdub, bluehub, wistia
 
  -c, --columns=ARG        max number of columns [default: 80]
  -r, --rows=ARG           max number of rows [default: 7]
