@@ -26,12 +26,14 @@
  (import srfi-69); hash tables
  (import srfi-141); integer math (for floor-quotient) - not in standard lib
  (import srfi-13); string-join
+ (import chicken.condition)
  (import chicken.format)
  (import chicken.sort)
  (import chicken.base) ; current-error-port
  (import scheme)
  (import listicles)
  (import masutils)
+ (import modular-arithmetic)
 
  (define color-schemes
    (let* ((schemes (make-hash-table)))
@@ -156,7 +158,7 @@
 				)
 			(if (and
 				   (== current-row-index 0)
-				   (== num-columns (length current-row))
+				   (== num-columns (* (length current-row) 2))
 				   )
 			  ; exit, returning the output-data accumulated
 		      (complete-output-data output-data)
@@ -175,6 +177,10 @@
 
 
  (define (print-heatmap numbers num-columns num-rows color-scheme)
+   ; test mod 2
+   (if (not (eq? (modulo num-columns 2) 0))
+	   (signal "num-columns must be an even number"))
+
    (let ((output-data
 		  (populate-output-data
 		   (percentify-numbers numbers)

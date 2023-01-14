@@ -29,6 +29,7 @@
 (import listicles)
 (import srfi-13); string-join
 (import srfi-69)
+(import modular-arithmetic)
 
 (import chicken.format)
 
@@ -55,9 +56,13 @@
  (with-output-to-port (current-error-port)
    (lambda ()
      (print "Usage: piped data | heatmapper " (car (argv)) " [options...] ")
-     (print "       Supported color schemes: github, darkhub, wistia")
      (newline)
      (print (args:usage opts))
+     (newline)
+	 (print "       Note that each block of color is 2 characters wide. ")
+	 (print "       This means columns must be a multiple of 2. ")
+     (newline)
+     (print "       Supported color schemes: github, darkhub, wistia")
      (print "Report bugs to https://github.com/masukomi/heatmapper/issues")))
  (exit 0))
 
@@ -110,6 +115,8 @@
      (create-entry (cdr downcased-args) (open-db))))
    (process-command '() '()))))
 
-(if (eq? 0 (length numbers))
+(if (or (eq? 0 (length numbers))
+		(not (eq? 0 (modulo columns 2)))
+		)
 	(usage))
 (print-heatmap numbers columns rows colors)
