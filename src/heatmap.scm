@@ -134,16 +134,29 @@
 	   (let ((initial-length (length (car output-data))))
 		 (completer (- (length output-data) 1) 1 initial-length output-data))))
 
- (define (populate-output-data numbers columns rows output-data)
-   (define (populator numbers columns rows row-index output-data)
+ ; this is a little unintuitive
+ ;
+ ; output-data is initially a list of num-rows empty lists
+ ;
+ ; as we iterate over "numbers" we're looping over the rows and shoving
+ ; the next number into the current-row
+ ; when the row is full, we then reset the current-row
+ ; this causes a new column to be started with the next insertion.
+ (define (populate-output-data numbers num-columns num-rows output-data)
+   (define (populator numbers num-columns num-rows row-index output-data)
 	(if (null? numbers)
 		(complete-output-data output-data)
 		  (let* (
-				 (current-row-index (if (eq? (- rows 1) row-index) 0 (+ row-index 1)))
+				 ; the first time through row-index is -1
+				 ; Assume there are 7 rows
+				 ; if row-index == (num-rows - 1); eg when row-index is 6
+				 ; then we need to jump up to the position of the next column.
+				 (current-row-index (if (eq? (- num-rows 1) row-index) 0 (+ row-index 1)))
 				 (current-row (nth current-row-index output-data))
 				)
-			(if (and (== current-row 0)
-				   (== columns (length current-row))
+			(if (and
+				   (== current-row-index 0)
+				   (== num-columns (length current-row))
 				   )
 			  ; exit, returning the output-data accumulated
 		      (complete-output-data output-data)
@@ -153,20 +166,21 @@
 		      										(insert-last (car numbers) current-row)
 													output-data)))
 		      	(populator (cdr numbers)
-							columns
-							rows
+							num-columns
+							num-rows
 							current-row-index
 							new-output-data
 							)))))))
-   (populator numbers columns rows -1 output-data))
+   (populator numbers num-columns num-rows -1 output-data))
 
 
- (define (print-heatmap numbers columns rows color-scheme)
+ (define (print-heatmap numbers num-columns num-rows color-scheme)
    (let ((output-data
 		  (populate-output-data
 		   (percentify-numbers numbers)
-		   columns rows
-		   (prep-output-data rows ))))
+		   num-columns
+		   num-rows
+		   (prep-output-data num-rows ))))
 	 (print-rows (hash-table-ref color-schemes color-scheme) output-data)))
 
  (define (print-rows color-scheme rows)
