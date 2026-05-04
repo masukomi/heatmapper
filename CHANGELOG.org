@@ -1,0 +1,10 @@
+* v2.0.0
+
+** [fixed]
+- build script now has CHECKEN_REPOSITORY_PATH
+- simple-loops now in install script
+
+** [change]
+- tweaked configurable_example_generator.fish
+- no longer hard-codes rows to 7 unless specified.
+
