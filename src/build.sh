@@ -22,6 +22,10 @@ masutils
 heatmap
 )
 
+# Include current dir so the compiler can find locally-built .import.scm files
+CHICKEN_REPOSITORY_PATH=".:$(chicken-install -repository)"
+export CHICKEN_REPOSITORY_PATH
+
 for lib in ${libs[@]}; do
 	echo "building $lib"
 	csc -static -unit $lib -cJ $lib".scm"
