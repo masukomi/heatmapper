@@ -105,7 +105,10 @@
    (define (add-row remaining accumulator)
 	 (if (== remaining 0)
 		 accumulator
-		 (add-row (- remaining 1) (insert-last '() accumulator))))
+		 (add-row
+		  (- remaining 1)
+		  (insert-last '() accumulator))))
+
    (add-row rows '()))
 
  ; output is complete if every row has the same number of elements

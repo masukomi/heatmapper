@@ -38,7 +38,7 @@
        (args:make-option (c columns)    #:required     "max number of columns [default: 80]"
 		 (set! arg (string->number (or arg "80")))
 		 )
-       (args:make-option (r rows)       #:required     "max number of rows [default: 7]"
+       (args:make-option (r rows)       #:required     "number of rows [default: auto-calculated from data]"
 		 (set! arg (string->number (or arg "7")))
 		 )
        (args:make-option (s scheme)     #:required     "color scheme [default: github]"
@@ -66,7 +66,7 @@
      (print "Report bugs to https://github.com/masukomi/heatmapper/issues")))
  (exit 0))
 
-(define rows 7)
+(define rows #f)
 (define columns 80)
 (define colors 'github)
 
@@ -102,6 +102,9 @@
 ; argument handling?!  Hah! Configurability is for the weak!
 (define numbers
   (map (lambda (x)(string->number x)) (string-split input-string)))
+
+(if (not rows)
+    (set! rows (ceiling (/ (length numbers) (/ columns 2)))))
 
 
 
